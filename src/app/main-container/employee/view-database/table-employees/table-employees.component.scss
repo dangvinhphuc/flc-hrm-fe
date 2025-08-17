@@ -1,0 +1,26 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10.5px 0px;
+
+  .button {
+    display: flex;
+    column-gap: 10px;
+  }
+
+}
+
+.table {
+  tbody {
+    tr {
+      .row-action {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.warning-icon {
+  font-size: 30px;
+  color: #ff4d4f;
+}

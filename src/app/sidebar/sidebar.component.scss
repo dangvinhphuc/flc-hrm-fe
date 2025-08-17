@@ -1,0 +1,19 @@
+.container {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .logo {
+    width: 100%;
+  }
+
+  .menu-container {
+    height: calc(100vh - 65px);
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+  }
+}

@@ -1,0 +1,118 @@
+<div class="toolbar">
+  <div class="button">
+    <button nz-button nzType="primary" (click)="onClickAddEmployee()">
+      New
+    </button>
+    <button
+      nz-button
+      nzType="dashed"
+      [nzDanger]="true"
+      (click)="onClickDeleteEmployee()"
+    >
+      Delete
+    </button>
+    <button nz-button nzType="dashed" (click)="onClickImportDatabase()">
+      Import
+    </button>
+    <button nz-button nzType="dashed" (click)="onClickExportDatabase()">
+      Export
+    </button>
+  </div>
+  <div>
+    <nz-input-group [nzPrefix]="prefixSearch">
+      <input type="text" nz-input placeholder="Search..." />
+    </nz-input-group>
+    <ng-template #prefixSearch
+      ><nz-icon nzType="search" nzTheme="outline"
+    /></ng-template>
+  </div>
+</div>
+<div class="table">
+  <nz-table
+    #viewDatabase
+    [nzData]="database"
+    nzNoResult="No data"
+    [nzFrontPagination]="false"
+    [nzShowPagination]="false"
+  >
+    <thead>
+      <tr>
+        <th
+          [nzChecked]="checkedAll"
+          (nzCheckedChange)="onAllChecked($event)"
+        ></th>
+        <th>ID</th>
+        <th>Fullname</th>
+        <th>Dept</th>
+        <th>Area</th>
+        <th>Outlet</th>
+        <th>Position</th>
+        <th>Level</th>
+        <th>Start date</th>
+        <th>Contract type</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (data of viewDatabase.data; track data) {
+      <tr>
+        <td
+          [nzChecked]="setOfCheckedId.has(data.id)"
+          (nzCheckedChange)="onItemChecked(data.id, $event)"
+        ></td>
+        <td>{{ data.empId }}</td>
+        <td>{{ data.fullName }}</td>
+        <td>{{ data.dept }}</td>
+        <td>{{ data.area }}</td>
+        <td>{{ data.outlet }}</td>
+        <td>{{ data.position }}</td>
+        <td>{{ data.level }}</td>
+        <td>{{ data.joinDate | date : "dd/MM/yyyy" }}</td>
+        <td>{{ data.contractType }}</td>
+        <td>
+          <div
+            nz-dropdown
+            [nzDropdownMenu]="rowAction"
+            nzTrigger="click"
+            class="row-action"
+          >
+            <nz-icon nzType="menu" nzTheme="outline" />
+          </div>
+          <nz-dropdown-menu #rowAction="nzDropdownMenu">
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item (click)="onClickActionMoreDetail(data)">More</li>
+              <li nz-menu-item nzDanger>Delete</li>
+            </ul>
+          </nz-dropdown-menu>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </nz-table>
+</div>
+<nz-modal
+  [(nzVisible)]="isVisibleMoreDetailModal"
+  [nzTitle]="titleMoreDetailModal"
+  (nzOnCancel)="onClickCancelMoreDetailModal()"
+  [nzFooter]="null"
+  nzWidth="900px"
+>
+  <ng-container *nzModalContent>
+    <app-more-details></app-more-details>
+  </ng-container>
+</nz-modal>
+<nz-modal
+  [(nzVisible)]="isVisibleDeleteModal"
+  nzTitle="Confirmation"
+  nzOkText="Yes"
+  nzCancelText="No"
+  [nzOkDanger]="true"
+  (nzOnCancel)="onClickCancelDeleteModal()"
+>
+  <ng-container *nzModalContent>
+    <div nz-flex nzGap="small" nzJustify="start" nzAlign="end">
+      <nz-icon class="warning-icon" nzType="warning" nzTheme="outline" />
+      <div>Are you sure you want to proceed?</div>
+    </div>
+  </ng-container>
+</nz-modal>

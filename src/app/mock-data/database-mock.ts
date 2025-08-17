@@ -1,0 +1,40 @@
+import { Employee } from '../interfaces/database.interface';
+
+export const databaseMock: Employee[] = [
+  {
+    id: '1',
+    empId: 'EMP001',
+    fullName: 'John Doe',
+    dept: 'HR',
+    area: 'Head Office',
+    outlet: 'Main Branch',
+    position: 'Manager',
+    level: 5,
+    joinDate: new Date('2020-01-15'),
+    contractType: 'Permanent',
+  },
+  {
+    id: '2',
+    empId: 'EMP002',
+    fullName: 'Jane Smith',
+    dept: 'IT',
+    area: 'Head Office',
+    outlet: 'Main Branch',
+    position: 'Developer',
+    level: 4,
+    joinDate: new Date('2019-03-22'),
+    contractType: 'Contract',
+  },
+  {
+    id: '3',
+    empId: 'EMP003',
+    fullName: 'Alice Johnson',
+    dept: 'Finance',
+    area: 'Branch Office',
+    outlet: 'Branch A',
+    position: 'Analyst',
+    level: 3,
+    joinDate: new Date('2021-06-10'),
+    contractType: 'Internship',
+  },
+];

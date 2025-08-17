@@ -1,0 +1,72 @@
+<div class="container">
+  <div>
+    <img class="logo" src="assets/images/logo-flc-quynhon.png" />
+  </div>
+  <div
+    nz-flex
+    [nzVertical]="true"
+    nzJustify="space-between"
+    class="menu-container"
+  >
+    <ng-container
+      *ngTemplateOutlet="
+        renderMenu;
+        context: { items: topMenuItems, placement: '' }
+      "
+    ></ng-container>
+
+    <ng-container
+      *ngTemplateOutlet="
+        renderMenu;
+        context: { items: bottomMenuItems, placement: 'topLeft' }
+      "
+    ></ng-container>
+  </div>
+</div>
+
+<ng-template #renderMenu let-items="items" let-placement="placement">
+  <ul nz-menu nzMode="inline">
+    @for (item of items; track $index) { @if (!item.subMenu) {
+    <li nz-menu-item [routerLink]="item.link">
+      <div class="menu-item">
+        <nz-icon [nzType]="item.icon" nzTheme="outline" />
+        <div>{{ item.title }}</div>
+      </div>
+    </li>
+    } @else {
+    <li
+      nz-submenu
+      [(nzOpen)]="item.isOpen"
+      [nzTitle]="item.title"
+      [nzIcon]="item.icon"
+      nzTriggerSubMenuAction="click"
+      [nzPlacement]="placement || null"
+      (nzOpenChange)="openHandler($event)"
+    >
+      <ul>
+        @for (sub of item.subMenu; track $index) { @if (!sub.subMenu) {
+        <li nz-menu-item [routerLink]="sub.link">
+          {{ sub.title }}
+        </li>
+        } @else {
+        <li
+          nz-submenu
+          [(nzOpen)]="sub.isOpen"
+          [nzTitle]="sub.title"
+          nzTriggerSubMenuAction="click"
+          (nzOpenChange)="openHandler($event)"
+        >
+          <ul>
+            @for (child of sub.subMenu; track $index) {
+            <li nz-menu-item [routerLink]="child.link">
+              {{ child.title }}
+            </li>
+            }
+          </ul>
+        </li>
+        } }
+      </ul>
+    </li>
+    } }
+  </ul>
+</ng-template>
