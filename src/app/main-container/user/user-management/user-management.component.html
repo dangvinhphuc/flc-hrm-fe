@@ -1,0 +1,172 @@
+<div class="mb-4" style="text-align: right">
+  <input
+    nz-input
+    type="text"
+    class="search-box"
+    placeholder="Search user..."
+    [(ngModel)]="search"
+    (ngModelChange)="onSearchChange($event)"
+  />
+</div>
+
+<nz-table
+  #userTable
+  [nzBordered]="true"
+  [nzSize]="'middle'"
+  [nzData]="users"
+  [nzBordered]="true"
+  [nzShowPagination]="false"
+>
+  <thead>
+    <tr>
+      <th nzWidth="40px" nzAlign="center">
+        <label
+          nz-checkbox
+          [(ngModel)]="allChecked"
+          (ngModelChange)="checkAll($event)"
+        ></label>
+      </th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Email</th>
+      <th nzWidth="200px" nzAlign="center">Role</th>
+      <th nzWidth="100px" nzAlign="center">Active</th>
+      <th nzWidth="100px" nzAlign="center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (user of users; track user) {
+    <tr>
+      <td nzAlign="center">
+        <label
+          nz-checkbox
+          [(ngModel)]="user.checked"
+          (ngModelChange)="refreshCheckedStatus()"
+        ></label>
+      </td>
+      <td>{{ user.firstName }}</td>
+      <td>{{ user.lastName }}</td>
+      <td>{{ user.email }}</td>
+      <td nzAlign="center">
+        <nz-tag [nzColor]="getRoleColor(user.roleName)">
+          {{ user.roleName }}
+        </nz-tag>
+      </td>
+      <td nzAlign="center">
+        <nz-switch
+          [(ngModel)]="user.isActive"
+          [nzCheckedChildren]="'On'"
+          [nzUnCheckedChildren]="'Off'"
+          (ngModelChange)="toggleActive(user.id)"
+        ></nz-switch>
+      </td>
+      <td nzAlign="center">
+        <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
+          <i nz-icon nzType="more" nzTheme="outline"></i>
+        </a>
+
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item (click)="openEditModal(user)">
+              <span class="flex items-center gap-1">
+                <i nz-icon nzType="edit" nzTheme="outline"></i>
+                Edit
+              </span>
+            </li>
+            <li
+              class="danger-item"
+              nz-menu-item
+              (click)="confirmDelete(user.id)"
+            >
+              <span class="flex items-center gap-1">
+                <i nz-icon nzType="delete" nzTheme="outline"></i>
+                Delete
+              </span>
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+      </td>
+    </tr>
+    }
+  </tbody>
+</nz-table>
+
+<nz-modal
+  [(nzVisible)]="isEditModalVisible"
+  nzTitle="Edit User"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="onCancelEditModal()"
+>
+  <ng-container *nzModalContent>
+    <form [formGroup]="editForm" nz-form nzLayout="vertical">
+      <nz-form-item>
+        <nz-form-label nzFor="firstName" nzRequired>First name</nz-form-label>
+        <nz-form-control nzErrorTip="First name must be 2-50 characters">
+          <input
+            nz-input
+            formControlName="firstName"
+            id="firstName"
+            placeholder="John"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="lastName" nzRequired>Last name</nz-form-label>
+        <nz-form-control nzErrorTip="Last name must be 2-50 characters">
+          <input
+            nz-input
+            formControlName="lastName"
+            id="lastName"
+            placeholder="Doe"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="email" nzRequired>Email</nz-form-label>
+        <nz-form-control nzErrorTip="Please enter a valid email">
+          <input
+            nz-input
+            type="email"
+            formControlName="email"
+            id="email"
+            placeholder="name@example.com"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="roleName" nzRequired>Role</nz-form-label>
+        <nz-form-control nzErrorTip="Please select a role">
+          <nz-select
+            formControlName="roleName"
+            id="roleName"
+            nzPlaceHolder="Select a role"
+          >
+            @for (r of roles; track r) {
+            <nz-option [nzValue]="r" [nzLabel]="r"></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+  <ng-template #modalFooter>
+    <div class="modal-footer-center">
+      <button
+        nz-button
+        nzType="default"
+        class="equal-btn"
+        (click)="onCancelEditModal()"
+      >
+        Cancel
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        class="equal-btn"
+        (click)="onSaveEditModal()"
+      >
+        Save
+      </button>
+    </div>
+  </ng-template>
+</nz-modal>

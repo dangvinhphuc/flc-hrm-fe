@@ -78,7 +78,7 @@ export class SignUpComponent implements OnInit {
         '',
         [Validators.required, this.confirmationValidator.bind(this)],
       ],
-      role: [null, [Validators.required]],
+      roleName: [null, [Validators.required]],
     });
 
     this.registerForm.get('password')?.valueChanges.subscribe(() => {
@@ -110,8 +110,8 @@ export class SignUpComponent implements OnInit {
       this.userService.createUser(userRegistration).subscribe({
         next: () => {
           this.modal.success({
-            nzTitle: 'Đăng ký thành công 🎉',
-            nzContent: 'Tài khoản của bạn đã được tạo thành công.',
+            nzTitle: 'Registration Successful 🎉',
+            nzContent: 'Your account has been created successfully.',
             nzOnOk: () => {
               this.registerForm.reset();
             },
@@ -119,8 +119,8 @@ export class SignUpComponent implements OnInit {
         },
         error: () => {
           this.modal.error({
-            nzTitle: 'Đăng ký thất bại ❌',
-            nzContent: 'Vui lòng thử lại sau.',
+            nzTitle: 'Registration Failed ❌',
+            nzContent: 'Please try again later.',
           });
         },
       });

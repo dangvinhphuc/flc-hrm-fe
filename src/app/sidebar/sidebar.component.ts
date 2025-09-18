@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { MenuItem } from '../interfaces/sidebar.interface';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NgTemplateOutlet } from '@angular/common';
+import { menuItems } from '../const/menu-items';
+import { AuthService } from '../services/auth.service';
+import { User } from '../interfaces/user.interface';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,115 +21,67 @@ import { NgTemplateOutlet } from '@angular/common';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
-export class SidebarComponent {
-  public topMenuItems: MenuItem[] = [
-    {
-      icon: 'team',
-      title: 'Database',
-      isOpen: false,
-      subMenu: [
-        {
-          icon: '',
-          title: 'View',
-          link: '/database/view',
-          isOpen: false,
-        },
-        {
-          icon: '',
-          title: 'Report',
-          isOpen: false,
-          subMenu: [
-            {
-              icon: '',
-              title: 'Manning',
-              link: '/database/report/manning-report',
-              isOpen: false,
-            },
-            {
-              icon: '',
-              title: 'Turnovers',
-              link: '/database/report/turnovers-report',
-              isOpen: false,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      icon: 'solution',
-      title: 'Recruitment',
-      isOpen: false,
-      subMenu: [
-        {
-          icon: '',
-          title: 'Job',
-          link: '/recruitment/job',
-          isOpen: false,
-        },
-        {
-          icon: '',
-          title: 'Applicant',
-          link: '/recruitment/applicant',
-          isOpen: false,
-        },
-      ],
-    },
-    {
-      icon: 'field-time',
-      title: 'Timesheet',
-      link: '/timesheet',
-      isOpen: false,
-      // subMenu: [],
-    },
-    {
-      icon: 'dollar',
-      title: 'Payroll',
-      link: '/payroll',
-      isOpen: false,
-    },
-    {
-      icon: 'setting',
-      title: 'Admin',
-      link: '/admin',
-      isOpen: false,
-    },
-  ];
+export class SidebarComponent implements OnInit {
+  public menuItems: MenuItem[] = [];
 
-  public bottomMenuItems: MenuItem[] = [
-    {
-      icon: 'user',
-      title: 'Account',
-      isOpen: false,
-      subMenu: [
-        {
-          icon: '',
-          title: 'My Profile',
-          link: '/account/my-profile',
-          isOpen: false,
-        },
-        {
-          icon: '',
-          title: 'Sign In',
-          link: '/account/sign-in',
-          isOpen: false,
-        },
-        {
-          icon: '',
-          title: 'Sign Up',
-          link: '/account/sign-up',
-          isOpen: false,
-        },
-        {
-          icon: '',
-          title: 'Sign Out',
-          link: '/account/sign-out',
-          isOpen: false,
-        },
-      ],
-    },
-  ];
+  constructor(private authService: AuthService, private router: Router) {}
 
-  public openHandler(value: boolean): void {
-    // console.log('openHandler', value);
+  ngOnInit(): void {
+    this.authService.user$.subscribe((user) => {
+      this.menuItems = this.filterMenuItems(menuItems, user);
+    });
+  }
+
+  filterMenuItems(items: MenuItem[], user: User | null): MenuItem[] {
+    return items
+      .filter((item) => {
+        if (!user) {
+          return item.title === 'Account';
+        }
+        if (item.roles && user.roleName) {
+          return item.roles.includes(user.roleName);
+        }
+        return true;
+      })
+      .map((item) => {
+        if (item.title === 'Account' && item.subMenu) {
+          return {
+            ...item,
+            title: user ? `${user.firstName} ${user.lastName}` : 'Account',
+            subMenu: item.subMenu.filter((sub) => {
+              if (user) {
+                return sub.title !== 'Sign In' && sub.title !== 'Sign Up';
+              } else {
+                return sub.title === 'Sign In' || sub.title === 'Sign Up';
+              }
+            }),
+          };
+        }
+        return item;
+      });
+  }
+
+  openHandler(open: boolean, item: MenuItem, items: MenuItem[]) {
+    if (open) {
+      items.forEach((i) => {
+        if (i !== item) {
+          i.isOpen = false;
+          if (i.subMenu) {
+            i.subMenu.forEach((sub) => (sub.isOpen = false));
+          }
+        }
+      });
+    }
+  }
+
+  onClickItem(item: MenuItem) {
+    switch (item?.action) {
+      case 'signOut':
+        this.authService.setSignOut();
+        this.router.navigate(['/account/sign-in']);
+        break;
+      default:
+        break;
+    }
   }
 }

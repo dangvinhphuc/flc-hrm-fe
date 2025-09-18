@@ -1,0 +1,59 @@
+:host {
+  display: block;
+  padding: 16px;
+}
+
+nz-table {
+  width: 100%;
+  margin-top: 20px;
+}
+
+i[nz-icon] {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+::ng-deep .ant-dropdown-menu-item span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+::ng-deep .ant-dropdown-menu .danger-item {
+  color: #ff4d4f !important;
+}
+
+::ng-deep .ant-dropdown-menu .danger-item:hover {
+  background-color: #fff1f0 !important;
+  color: #cf1322 !important;
+}
+
+.search-box {
+  width: 30%;
+  min-width: 250px;
+  padding: 6px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  &:focus {
+    outline: none;
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  }
+}
+
+.modal-footer-center {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+
+  .equal-btn {
+    width: 100px;
+  }
+}
+
+::ng-deep .ant-modal-footer {
+  border-top: none !important;
+}

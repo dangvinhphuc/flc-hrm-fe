@@ -99,11 +99,11 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label nzFor="role" nzRequired>Role</nz-form-label>
+        <nz-form-label nzFor="roleName" nzRequired>Role</nz-form-label>
         <nz-form-control nzErrorTip="Please select a role">
           <nz-select
-            formControlName="role"
-            id="role"
+            formControlName="roleName"
+            id="roleName"
             nzPlaceHolder="Select a role"
           >
             @for (r of roles; track r.value) {
