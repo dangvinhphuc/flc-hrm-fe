@@ -1,0 +1,34 @@
+.property-container {
+  padding: 16px;
+
+  nz-table {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+  }
+}
+
+::ng-deep .ant-dropdown-menu .danger-item {
+  color: #ff4d4f !important;
+}
+
+::ng-deep .ant-dropdown-menu .danger-item:hover {
+  background-color: #fff1f0 !important;
+  color: #cf1322 !important;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+
+  .modal-btn {
+    width: 100px;
+  }
+}

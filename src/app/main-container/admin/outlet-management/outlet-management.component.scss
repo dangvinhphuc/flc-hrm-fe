@@ -1,0 +1,51 @@
+.container {
+  padding: 16px;
+
+  nz-table {
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
+::ng-deep .ant-dropdown-menu .danger-item {
+  color: #ff4d4f !important;
+}
+
+::ng-deep .ant-dropdown-menu .danger-item:hover {
+  background-color: #fff1f0 !important;
+  color: #cf1322 !important;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+
+  .modal-btn {
+    width: 100px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 16px;
+    width: 70%;
+
+    nz-select {
+      width: 200px;
+    }
+
+    .search-box {
+      width: 30%;
+    }
+  }
+
+
+}

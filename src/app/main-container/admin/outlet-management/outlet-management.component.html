@@ -1,0 +1,164 @@
+<div class="container">
+  <div class="header">
+    <button nz-button nzType="primary" (click)="openAddModal()">
+      <span nz-icon nzType="plus"></span>
+      Add New
+    </button>
+    <div class="filter-container">
+      <nz-select nzPlaceHolder="Filter Property">
+        @for (property of properties; track property) {
+        <nz-option [nzValue]="property.id" [nzLabel]="property.fullName">
+        </nz-option>
+        }
+      </nz-select>
+      <nz-select nzPlaceHolder="Filter Department">
+        @for (dept of departments; track dept) {
+        <nz-option [nzValue]="dept.id" [nzLabel]="dept.enFullName"> </nz-option>
+        }
+      </nz-select>
+      <input nz-input type="text" class="search-box" placeholder="Search..." />
+    </div>
+  </div>
+
+  <nz-table
+    #departmentTable
+    [nzBordered]="true"
+    [nzData]="listOfData"
+    [nzFrontPagination]="false"
+    [nzShowPagination]="false"
+  >
+    <thead>
+      <tr>
+        <th
+          nzWidth="50px"
+          nzShowCheckbox
+          [(nzChecked)]="checkedAll"
+          (nzCheckedChange)="onAllChecked($event)"
+        ></th>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Property</th>
+        <th nzWidth="150px">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of departmentTable.data; track item) {
+      <tr>
+        <td
+          nzShowCheckbox
+          [nzChecked]="setOfCheckedId.has(item.id)"
+          (nzCheckedChange)="onItemChecked(item.id, $event)"
+        ></td>
+        <td>
+          <nz-tag nzColor="#2E68AB">
+            {{ item.name }}
+          </nz-tag>
+        </td>
+        <td>{{ item.department.enFullName }}</td>
+        <td>{{ item.property.fullName }}</td>
+        <td>
+          <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
+            <i nz-icon nzType="menu" nzTheme="outline"></i>
+          </a>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click)="openEditModal(item)">
+                <span>
+                  <i nz-icon nzType="edit" nzTheme="outline"></i>
+                  Edit
+                </span>
+              </li>
+              <li
+                class="danger-item"
+                nz-menu-item
+                (click)="confirmDelete(item.id)"
+              >
+                <span>
+                  <i nz-icon nzType="delete" nzTheme="outline"></i>
+                  Delete
+                </span>
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </nz-table>
+
+  <nz-modal
+    [(nzVisible)]="isModalVisible"
+    [nzTitle]="isEditMode ? 'Edit Department' : 'Add New Department'"
+    [nzOkLoading]="isSubmitting"
+    [nzFooter]="modalFooter"
+    (nzOnCancel)="handleCancel()"
+  >
+    <ng-container *nzModalContent>
+      <form [formGroup]="form" nz-form nzLayout="vertical">
+        <nz-form-item>
+          <nz-form-label nzFor="name" nzRequired>Name</nz-form-label>
+          <nz-form-control nzErrorTip="Required">
+            <input
+              nz-input
+              formControlName="name"
+              id="name"
+              placeholder="Enter a name"
+            />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="departmentId" nzRequired
+            >Department</nz-form-label
+          >
+          <nz-form-control nzErrorTip="Required">
+            <nz-select
+              id="departmentId"
+              formControlName="departmentId"
+              nzPlaceHolder="Select Department"
+            >
+              @for (dept of departments; track dept) {
+              <nz-option [nzValue]="dept.id" [nzLabel]="dept.enFullName">
+              </nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="propertyId" nzRequired>Property</nz-form-label>
+          <nz-form-control nzErrorTip="Required">
+            <nz-select
+              id="propertyId"
+              formControlName="propertyId"
+              nzPlaceHolder="Select Property"
+            >
+              @for (property of properties; track property) {
+              <nz-option [nzValue]="property.id" [nzLabel]="property.fullName">
+              </nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+    <ng-template #modalFooter>
+      <div class="modal-footer">
+        <button
+          nz-button
+          nzType="default"
+          class="modal-btn"
+          (click)="handleCancel()"
+        >
+          Cancel
+        </button>
+        <button
+          nz-button
+          nzType="primary"
+          class="modal-btn"
+          (click)="handleOk()"
+        >
+          Save
+        </button>
+      </div>
+    </ng-template>
+  </nz-modal>
+</div>

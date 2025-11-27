@@ -18,6 +18,7 @@ import {
   WarningOutline,
   EyeInvisibleOutline,
   MoreOutline,
+  PlusOutline
 } from '@ant-design/icons-angular/icons';
 import { authInterceptor } from './interceptor/auth.interceptor';
 
@@ -42,6 +43,7 @@ export const appConfig: ApplicationConfig = {
         WarningOutline,
         EyeInvisibleOutline,
         MoreOutline,
+        PlusOutline
       ],
     },
     { provide: NZ_I18N, useValue: en_US },

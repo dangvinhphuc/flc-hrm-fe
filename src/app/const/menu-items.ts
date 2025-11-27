@@ -99,22 +99,46 @@ export const menuItems: MenuItem[] = [
   },
   {
     icon: 'setting',
-    title: 'Admin',
+    title: 'System management',
     isOpen: false,
     roles: [RoleEnum.SYSTEM_MANAGEMENT],
     subMenu: [
       {
         icon: '',
-        title: 'User management',
+        title: 'User',
         link: '/admin/user-management',
         isOpen: false,
       },
-      // {
-      //   icon: '',
-      //   title: 'Role management',
-      //   link: '/admin/role-management',
-      //   isOpen: false,
-      // },
+      {
+        icon: '',
+        title: 'Property',
+        link: '/admin/property-management',
+        isOpen: false,
+      },
+      {
+        icon: '',
+        title: 'Department',
+        link: '/admin/department-management',
+        isOpen: false,
+      },
+      {
+        icon: '',
+        title: 'Outlet',
+        link: '/admin/outlet-management',
+        isOpen: false,
+      },
+      {
+        icon: '',
+        title: 'Level',
+        link: '/admin/level-management',
+        isOpen: false,
+      },
+      {
+        icon: '',
+        title: 'Position',
+        link: '/admin/position-management',
+        isOpen: false,
+      },
     ],
   },
 ];

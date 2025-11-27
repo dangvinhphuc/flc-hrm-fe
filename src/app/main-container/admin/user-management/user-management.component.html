@@ -1,4 +1,4 @@
-<div class="mb-4" style="text-align: right">
+<div style="text-align: right">
   <input
     nz-input
     type="text"
@@ -19,7 +19,7 @@
 >
   <thead>
     <tr>
-      <th nzWidth="40px" nzAlign="center">
+      <th nzWidth="50px" nzAlign="center">
         <label
           nz-checkbox
           [(ngModel)]="allChecked"
@@ -68,7 +68,7 @@
         <nz-dropdown-menu #menu="nzDropdownMenu">
           <ul nz-menu>
             <li nz-menu-item (click)="openEditModal(user)">
-              <span class="flex items-center gap-1">
+              <span>
                 <i nz-icon nzType="edit" nzTheme="outline"></i>
                 Edit
               </span>
@@ -78,7 +78,7 @@
               nz-menu-item
               (click)="confirmDelete(user.id)"
             >
-              <span class="flex items-center gap-1">
+              <span>
                 <i nz-icon nzType="delete" nzTheme="outline"></i>
                 Delete
               </span>
